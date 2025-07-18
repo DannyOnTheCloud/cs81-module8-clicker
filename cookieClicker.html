@@ -1,3 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Monster Cookie Clicker!</title>
+
+    <!-- Animate.css CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-image: url('https://images.pexels.com/photos/310452/pexels-photo-310452.jpeg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            text-shadow: 2px 2px 4px #000000;
+            margin: 0;
+        }
+
+        #cookieBtn {
+            font-size: 40px;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s ease;
+            border-radius: 10px;
+            border: none;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+        }
+
+        #cookieBtn:hover {
+            transform: scale(1.1);
+        }
+
+        #counter, #message {
+            font-size: 24px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh);
+                opacity: 0;
+            }
+        }
+
+        .cookie-fall {
+            position: fixed;
+            top: -2em;
+            font-size: 2rem;
+            animation: fall 3s linear forwards;
+            z-index: 9999;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
 <body>
 <h1>Monster Cookie Clicker!</h1>
 <button id="cookieBtn">Click Me!</button>
@@ -12,20 +80,44 @@
         const counterDisplay = document.getElementById("counter");
         const messageDisplay = document.getElementById("message");
 
+        // rain function
+        function rainCookie() {
+            const cookie = document.createElement('div');
+            cookie.textContent = "🍪";
+            cookie.classList.add("cookie-fall");
+            cookie.style.left = Math.random() * 100 + 'vw';
+            document.body.appendChild(cookie);
+            setTimeout(() => cookie.remove(), 3000);
+        }
+
         button.addEventListener("click", () => {
             count++;
             counterDisplay.textContent = `Clicks: ${count}`;
 
             if (count === 10) {
-                messageDisplay.textContent = "You're just getting started!";
+                messageDisplay.textContent = "You're no Monster you're just a cookie";
             } else if (count === 25) {
-                messageDisplay.textContent = "Wow, that's a lot of cookies!";
+                messageDisplay.textContent = "I do this in my sleep!";
             } else if (count === 50) {
-                messageDisplay.textContent = "Are you still clicking?";
+                messageDisplay.textContent = "Wow, you're getting serious aren't ya?";
+
+                //Cookie rain at 50 clicks!
+                for (let i = 0; i < 30; i++) {
+                    setTimeout(rainCookie, i * 100);
+                }
+
             } else if (count === 100) {
-                messageDisplay.textContent = "You win! Maybe take a break 🍵";
+                messageDisplay.textContent = "Congratulations, you're officially a Cookie Monster!";
+            }
+
+            // Animate the message on milestones
+            if (count === 10 || count === 25 || count === 50 || count === 100) {
+                messageDisplay.classList.remove("animate__rubberBand");
+                void messageDisplay.offsetWidth;
+                messageDisplay.classList.add("animate__animated", "animate__rubberBand");
             }
         });
     });
 </script>
 </body>
+</html>
